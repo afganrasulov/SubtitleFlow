@@ -5,6 +5,12 @@ import { fetchTranscript, fetchVideoDetails } from './youtube';
 import { generateLinkedInPost, generateSEOBlog, analyzeProjectThemes } from './openai';
 
 export const setupWorkers = () => {
+    // Check if we are using a mock Redis (indicated by status='wait' from our mock)
+    if (redisConnection.status === 'wait' && !process.env.REDIS_URL) {
+        console.warn('⚠️  Skipping Worker setup (Redis not configured). Background jobs will not run.');
+        return;
+    }
+
     // YouTube Worker
     const youtubeWorker = new Worker('youtube-queue', async (job: Job) => {
         const { type, videoId, videoItemId, apiKey } = job.data;
