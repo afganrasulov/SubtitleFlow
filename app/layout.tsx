@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <nav className="glass-nav">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '32px', height: '32px', background: 'var(--primary)', borderRadius: '8px' }}></div>
+            <div style={{ width: '32px', height: '32px', background: 'var(--primary)', borderRadius: '100px' }}></div>
             <span style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.025em' }}>SubtitleFlow</span>
           </div>
         </nav>

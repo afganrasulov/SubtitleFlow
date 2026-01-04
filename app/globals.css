@@ -1,15 +1,18 @@
 :root {
-  --background: #0a0a0b;
-  --foreground: #f8fafc;
-  --card-bg: rgba(23, 23, 26, 0.7);
-  --card-border: rgba(255, 255, 255, 0.1);
-  --primary: #6366f1;
-  --primary-glow: rgba(99, 102, 241, 0.3);
-  --secondary: #10b981;
-  --accent: #f43f5e;
-  --muted: #94a3b8;
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --background: #f8f9fa;
+  --foreground: #1a1a1a;
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.05);
+  --primary: #ff7e47;
+  /* Orange accent from reference */
+  --primary-hover: #fa6d30;
+  --primary-glow: rgba(255, 126, 71, 0.2);
+  --secondary: #2d3436;
+  --accent: #ff7e47;
+  --muted: #8e8e93;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --soft-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
 }
 
 * {
@@ -26,59 +29,64 @@ body {
   min-height: 100vh;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .premium-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 16px;
-  backdrop-filter: blur(12px);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  border-radius: 24px;
+  /* More rounded as in reference */
+  box-shadow: var(--soft-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .premium-card:hover {
-  border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  background: var(--primary);
   color: white;
-  padding: 10px 20px;
-  border-radius: 12px;
+  padding: 14px 28px;
+  border-radius: 16px;
   border: none;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 15px var(--primary-glow);
+  box-shadow: 0 4px 12px var(--primary-glow);
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  background: var(--primary-hover);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px var(--primary-glow);
 }
 
 .btn-secondary {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 12px;
+  background: #f1f2f6;
+  border: none;
+  color: var(--foreground);
+  padding: 14px 28px;
+  border-radius: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background: var(--glass-border);
+  background: #e4e7eb;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -88,9 +96,9 @@ h1, h2, h3, h4 {
   top: 0;
   left: 0;
   right: 0;
-  height: 70px;
-  background: rgba(10, 10, 11, 0.8);
-  backdrop-filter: blur(8px);
+  height: 80px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
   z-index: 100;
   display: flex;
@@ -99,17 +107,61 @@ h1, h2, h3, h4 {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 100px 20px 40px;
+  padding: 120px 24px 100px;
+}
+
+.pill-tab {
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+}
+
+.pill-tab.active {
+  background: var(--foreground);
+  color: white;
+}
+
+.search-bar {
+  background: white;
+  border: 1px solid var(--card-border);
+  padding: 12px 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--soft-shadow);
+  margin-bottom: 32px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1rem;
+  background: transparent;
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

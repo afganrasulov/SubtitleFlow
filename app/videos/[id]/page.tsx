@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import {
     Loader2, ChevronLeft, Sparkles, FileText,
     Linkedin, Globe, Copy, Check, Download, Youtube
@@ -8,7 +8,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
-export default function VideoDetail({ params }: { params: { id: string } }) {
+export default function VideoDetail({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     const [video, setVideo] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [generating, setGenerating] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export default function VideoDetail({ params }: { params: { id: string } }) {
 
     const fetchVideo = async () => {
         try {
-            const res = await fetch(`/api/videos/${params.id}`);
+            const res = await fetch(`/api/videos/${id}`);
             const data = await res.json();
             setVideo(data);
         } catch (err) {
@@ -43,7 +44,7 @@ export default function VideoDetail({ params }: { params: { id: string } }) {
             await fetch('/api/jobs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type, videoItemId: params.id }),
+                body: JSON.stringify({ type, videoItemId: id }),
             });
             fetchVideo();
         } catch (err) {

@@ -5,8 +5,9 @@ import { youtubeQueue } from '@/lib/queues';
 
 export async function POST(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     const { url } = await request.json();
     const { videoId, playlistId } = parseYoutubeUrl(url);
     const apiKey = process.env.YOUTUBE_API_KEY!;
@@ -21,10 +22,10 @@ export async function POST(
         // Create multiple videos in background
         for (const v of videos) {
             const video = await prisma.video.upsert({
-                where: { projectId_youtubeVideoId: { projectId: params.id, youtubeVideoId: v.videoId } },
+                where: { projectId_youtubeVideoId: { projectId: id, youtubeVideoId: v.videoId } },
                 update: {},
                 create: {
-                    projectId: params.id,
+                    projectId: id,
                     youtubeVideoId: v.videoId,
                     title: v.title,
                     url: v.url,
@@ -43,10 +44,10 @@ export async function POST(
     } else if (videoId) {
         const details = await fetchVideoDetails(videoId, apiKey);
         const video = await prisma.video.upsert({
-            where: { projectId_youtubeVideoId: { projectId: params.id, youtubeVideoId: videoId } },
+            where: { projectId_youtubeVideoId: { projectId: id, youtubeVideoId: videoId } },
             update: {},
             create: {
-                projectId: params.id,
+                projectId: id,
                 youtubeVideoId: videoId,
                 title: details.title!,
                 url: details.url,

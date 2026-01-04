@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import {
     Plus, Youtube, FileText, CheckCircle2, XCircle, AlertCircle,
     Loader2, Download, Zap, BarChart3, ChevronLeft, ChevronRight, ExternalLink
@@ -8,7 +8,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
-export default function ProjectDetail({ params }: { params: { id: string } }) {
+export default function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     const [project, setProject] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [url, setUrl] = useState('');
@@ -23,7 +24,7 @@ export default function ProjectDetail({ params }: { params: { id: string } }) {
 
     const fetchProject = async () => {
         try {
-            const res = await fetch(`/api/projects/${params.id}`);
+            const res = await fetch(`/api/projects/${id}`);
             const data = await res.json();
             setProject(data);
         } catch (err) {
@@ -37,7 +38,7 @@ export default function ProjectDetail({ params }: { params: { id: string } }) {
         if (!url) return;
         setAdding(true);
         try {
-            await fetch(`/api/projects/${params.id}/videos`, {
+            await fetch(`/api/projects/${id}/videos`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url }),
@@ -57,7 +58,7 @@ export default function ProjectDetail({ params }: { params: { id: string } }) {
             await fetch('/api/jobs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'analyze', projectId: params.id }),
+                body: JSON.stringify({ type: 'analyze', projectId: id }),
             });
             fetchProject();
         } catch (err) {
